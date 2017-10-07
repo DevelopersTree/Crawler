@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Crawler.cs" />
+    <Compile Include="IOHelper.cs" />
     <Compile Include="Kurdish.cs" />
     <Compile Include="KurdishStringComparer.cs" />
     <Compile Include="Merger.cs" />

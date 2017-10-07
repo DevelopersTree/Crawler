@@ -18,7 +18,7 @@ namespace DevTree.Crawler
         private int _delay;
         private int _maxPages;
         private List<WebPage> _webPages;
-
+        private const string StatsFileName = "$Stats.txt";
         public Crawler(string[] args)
         {
             _uriToCrawl = GetSiteToCrawl(args);
@@ -50,6 +50,8 @@ namespace DevTree.Crawler
             config.IsExternalPageLinksCrawlingEnabled = false;
             config.IsRespectRobotsDotTextEnabled = true;
             config.IsUriRecrawlingEnabled = false;
+            config.IsHttpRequestAutoRedirectsEnabled = true;
+            config.UserAgentString = "DevTree Crawler";
             config.MaxConcurrentThreads = 10;
             config.MaxPagesToCrawl = maxPagesToCrawl;
             config.MinCrawlDelayPerDomainMilliSeconds = delayInMilliseconds;
@@ -89,7 +91,7 @@ namespace DevTree.Crawler
 
             _webPages.Add(page);
 
-            File.WriteAllText(page.FileName, contents);
+            IOHelper.SaveFile(page.FileName, contents);
 
             Console.WriteLine("Pages crowled: " + _webPages.Count);
             Console.WriteLine($"Page Crawled: {page.Url}, Saved to: {page.FileName}.");
@@ -98,7 +100,7 @@ namespace DevTree.Crawler
         public void SaveStats()
         {
             var statistics = _webPages.Select(w => $"{w.Url}, {w.FileName}").ToArray();
-            File.WriteAllLines(ParameterHelper.GetPath(_savePath, "Stats.txt"), statistics);
+            IOHelper.SaveFile(ParameterHelper.GetPath(_savePath, StatsFileName), statistics);
         }
 
     }

@@ -20,7 +20,7 @@ namespace DevTree.Crawler
                     case "crawl":
                         var seedPagesFile = ParameterHelper.GetParameter(args, "-seed", "seed pages file");
                         var seedPages = File.ReadAllLines(seedPagesFile);
-                        var savePath = ParameterHelper.GetParameter(args, "-path", $" save path");
+                        var savePath = ParameterHelper.GetParameter(args, "-output", $" output path");
                         var webPages = new List<WebPage>();
                         foreach (var page in seedPages)
                         {
@@ -49,15 +49,7 @@ namespace DevTree.Crawler
 Developers Tree Crawler
 A little app used to manage the words list
 
-Examples:
-
-crawler crawl -seed <link to txt file containing the urls> -path <path of folder to save the pages> [-delay <number of milliseconds : default is 1000>] [-maxpages <number of pages : default is 250>]
-
-Note:
-The entries in the text file for bulk-crawl should look like this:
-
-https://google.com
-https://en.wikipedia.org/wiki/Portal:History
+For information about how to use this app, please go to: https://github.com/DevelopersTree/Crawler
 ");
         }
     }

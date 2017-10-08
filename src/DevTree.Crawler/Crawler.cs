@@ -21,10 +21,10 @@ namespace DevTree.Crawler
         private const string StatsFileName = "$Stats.txt";
         public Crawler(string[] args)
         {
-            _uriToCrawl = GetSiteToCrawl(args);
-            _savePath = GetSavePath(args);
+            _uriToCrawl = new Uri(ParameterHelper.GetParameter(args, "-url", "absolute url"));
+            _savePath = ParameterHelper.GetParameter(args, "-output", $" output path");
             _delay = ParameterHelper.GetIntegerParameter(args, "-delay", 1000);
-            _maxPages = ParameterHelper.GetIntegerParameter(args, "-maxpages", 250);
+            _maxPages = ParameterHelper.GetIntegerParameter(args, "-pages", 250);
         }
 
         public string Crawl(List<WebPage> webPages)
@@ -57,26 +57,6 @@ namespace DevTree.Crawler
             config.MinCrawlDelayPerDomainMilliSeconds = delayInMilliseconds;
 
             return new PoliteWebCrawler(config);
-        }
-
-        private Uri GetSiteToCrawl(string[] args)
-        {
-            var url = ParameterHelper.GetParameter(args, "-url", "absolute url");
-
-            if (string.IsNullOrWhiteSpace(url))
-                throw new ApplicationException("Site url to crawl is as a required parameter");
-
-            return new Uri(url);
-        }
-
-        private string GetSavePath(string[] args)
-        {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var savePath = Path.Combine(directory, "Data");
-
-            var param = ParameterHelper.GetParameter(args, "-path", $" save path(leave empty for [{ savePath}])");
-
-            return string.IsNullOrWhiteSpace(param) ? savePath : param;
         }
 
         void crawler_ProcessPageCrawlCompleted(object sender, PageCrawlCompletedArgs e)

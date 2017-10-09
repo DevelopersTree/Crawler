@@ -8,11 +8,12 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>DevTree.Crawler</RootNamespace>
     <AssemblyName>crawler</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,6 +44,9 @@
     <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
     </Reference>
+    <Reference Include="DevTree.BeKurdi, Version=0.0.3.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DevTree.BeKurdi.0.0.3.1\lib\netstandard1.0\DevTree.BeKurdi.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.7.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Abot.1.5.1.69\lib\net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -53,7 +57,13 @@
       <HintPath>..\..\packages\NRobotsPatched.1.0.8.0\lib\net40\Robots.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,8 +73,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Crawler.cs" />
+    <Compile Include="Extractor.cs" />
     <Compile Include="IOHelper.cs" />
-    <Compile Include="Kurdish.cs" />
     <Compile Include="KurdishStringComparer.cs" />
     <Compile Include="Merger.cs" />
     <Compile Include="ParameterHelper.cs" />

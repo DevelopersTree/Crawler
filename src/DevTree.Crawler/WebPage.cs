@@ -10,5 +10,6 @@ namespace DevTree.Crawler
     {
         public string Url { get; set; }
         public string FileName { get; set; }
+        public int NumberOfWords { get; set; }
     }
 }

@@ -11,8 +11,6 @@ namespace DevTree.Crawler
     {
         static void Main(string[] args)
         {
-            log4net.Config.XmlConfigurator.Configure();
-
             if (args.Length >= 1)
             {
                 switch (args[0].ToLower())
@@ -20,13 +18,12 @@ namespace DevTree.Crawler
                     case "crawl":
                         var seedPagesFile = ParameterHelper.GetParameter(args, "-seed", "seed pages file");
                         var seedPages = File.ReadAllLines(seedPagesFile);
-                        var savePath = ParameterHelper.GetParameter(args, "-output", $" output path");
+
                         var webPages = new List<WebPage>();
                         foreach (var page in seedPages)
                         {
                             var pageCrawler = new Crawler(args.Union(new string[] { "-url", page }).ToArray());
                             pageCrawler.Crawl(webPages);
-                            pageCrawler.SaveStats();
                         }
                         
                         break;

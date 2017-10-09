@@ -16,16 +16,8 @@ namespace DevTree.Crawler
                 switch (args[0].ToLower())
                 {
                     case "crawl":
-                        var seedPagesFile = ParameterHelper.GetParameter(args, "-seed", "seed pages file");
-                        var seedPages = File.ReadAllLines(seedPagesFile);
-
-                        var webPages = new List<WebPage>();
-                        foreach (var page in seedPages)
-                        {
-                            var pageCrawler = new Crawler(args.Union(new string[] { "-url", page }).ToArray());
-                            pageCrawler.Crawl(webPages);
-                        }
-                        
+                        var pageCrawler = new Crawler(args);
+                        var webPages = pageCrawler.Crawl();
                         break;
 
                     default:

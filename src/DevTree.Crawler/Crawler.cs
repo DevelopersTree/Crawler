@@ -15,37 +15,35 @@ namespace DevTree.Crawler
         private const char IgnoreCharacter = '\0';
 
         private string _savePath = null;
-        private Uri _seedUrl;
         private int _delay;
         private int _maxPages;
-        private List<WebPage> _webPages;
+        private HashSet<WebPage> _webPages;
         private string _statsFilePath;
         private const string StatsFileName = "$Stats.txt";
+        private Uri _seedUrl;
         public Crawler(string[] args)
         {
-            _seedUrl = new Uri(ParameterHelper.GetParameter(args, "-url", "absolute url"));
             _savePath = ParameterHelper.GetParameter(args, "-output", $" output path");
             _delay = ParameterHelper.GetIntegerParameter(args, "-delay", 1000);
             _maxPages = ParameterHelper.GetIntegerParameter(args, "-pages", 250);
             _statsFilePath = ParameterHelper.GetPath(_savePath, StatsFileName);
+            _seedUrl = new Uri(ParameterHelper.GetParameter(args, "-url", " seed page"));
         }
 
-        public string Crawl(List<WebPage> webPages)
+        public HashSet<WebPage> Crawl()
         {
-            if (File.Exists(_statsFilePath) && webPages.Count == 0)
+            if (File.Exists(_statsFilePath))
                 File.Delete(_statsFilePath);
 
-            _webPages = webPages ?? new List<WebPage>();
-           
-            IWebCrawler crawler;
-           
-            crawler = GetDefaultWebCrawler(_maxPages, _delay);
+            var equalityComparer = ProjectionEqualityComparer.Create<WebPage, string>(page => page.Url);
+            _webPages = new HashSet<WebPage>(equalityComparer);
 
+            var crawler = GetDefaultWebCrawler(_maxPages, _delay);
             crawler.PageCrawlCompletedAsync += crawler_ProcessPageCrawlCompleted;
 
             CrawlResult result = crawler.Crawl(_seedUrl);
 
-            return _savePath;
+            return _webPages;
         }
 
         private IWebCrawler GetDefaultWebCrawler(int maxPagesToCrawl, int delayInMilliseconds)
@@ -71,16 +69,22 @@ namespace DevTree.Crawler
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            var contents = Extractor.Extract(e.CrawledPage.Content.Text);
-
             var page = new WebPage
             {
                 FileName = ParameterHelper.GetPath(_savePath, (_webPages.Count + 1).ToString() + ".txt"),
-                Url = e.CrawledPage.Uri.AbsoluteUri,
-                NumberOfWords = contents.Split(' ').Length
+                Url = e.CrawledPage.Uri.AbsoluteUri
             };
 
-            _webPages.Add(page);
+            var success = _webPages.Add(page);
+
+            if (!success)
+            {
+                Console.WriteLine("This page ha already been crawled...");
+                return;
+            }
+
+            var contents = Extractor.Extract(e.CrawledPage.Content.Text);
+            page.NumberOfWords = contents.Split(' ').Length;
 
             IOHelper.SaveFile(page.FileName, contents);
 

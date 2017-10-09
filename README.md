@@ -11,23 +11,17 @@ It has these commands:
 
 ### Crawl
 ```
-./crawler.exe crawl -seed <seed> -output <output> [-delay <delay>] [-pages <pages>]
+./crawler.exe crawl -url <url> -output <output> [-delay <delay>] [-pages <pages>]
 ```
 
 #### Parameters:
-- `seed`: The text file containing the **absolute** URLs of the seed pages. The more links a seed page contains, the better. The URLs in the text file should be seperated by a line break, like so:
-
-```
-https://en.wikipedia.org/wiki/Main_Page
-https://en.wikipedia.org/wiki/Wikipedia:About
-...
-```
+- `url`: The **absolute** URL for the site you want to crawl.
 - `output`: The folder to save the crawled pages. The crawler will also save a `$Stats.txt` file that contains the crawling stats.
 - `delay`: Number of milliseconds to wait between crawling two pages. Default value is `1000`
-- `pages`: Maximum number of pages to crawl for **each** seed page. Default value is `250`
+- `pages`: Maximum number of pages to crawl. Default value is `250`
 
 #### Examples:
 ```
-./crawler.exe crawl -seed ./seed.txt -output ./Data
-./crawler.exe crawl -seed ./seed.txt -output D:\CrawledPages\ -delay 250 -pages 1000
+./crawler.exe crawl -url https://ckb.wikipedia.org -output ./Data
+./crawler.exe crawl -url https://www.google.iq/ -output D:/CrawledPages/ -delay 250 -pages 1000
 ```

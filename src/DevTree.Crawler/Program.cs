@@ -22,7 +22,7 @@ namespace DevTree.Crawler
                         
                         break;
                     case "normalize":
-                        Crawler.ConvertToStandardText(args);
+                        Normalizer.ConvertToStandardText(args);
 
                        break;
 

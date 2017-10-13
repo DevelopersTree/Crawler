@@ -10,6 +10,8 @@ namespace DevTree.Crawler
     {
         public static void DrawTextProgressBar(int progress, int total)
         {
+            var defaultColor = Console.BackgroundColor;
+
             //draw empty progress bar
             Console.CursorLeft = 0;
             Console.Write("["); //start
@@ -37,7 +39,7 @@ namespace DevTree.Crawler
 
             //draw totals
             Console.CursorLeft = 35;
-            Console.BackgroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = defaultColor;
             Console.Write(progress.ToString() + " of " + total.ToString() + "    "); //blanks at the end remove any excess
         }
     }

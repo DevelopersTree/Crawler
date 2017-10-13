@@ -72,10 +72,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleUtil.cs" />
     <Compile Include="Crawler.cs" />
     <Compile Include="Extractor.cs" />
     <Compile Include="IOHelper.cs" />
-    <Compile Include="KurdishStringComparer.cs" />
     <Compile Include="Merger.cs" />
     <Compile Include="ParameterHelper.cs" />
     <Compile Include="Program.cs" />

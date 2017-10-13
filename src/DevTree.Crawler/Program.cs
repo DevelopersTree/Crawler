@@ -13,12 +13,10 @@ namespace DevTree.Crawler
         {
             if (args.Length >= 1)
             {
-                Crawler pageCrawler = null;
                 switch (args[0].ToLower())
                 {
                     case "crawl":
-                        pageCrawler  = new Crawler(args);
-                        var webPages = pageCrawler.Crawl();
+                        Crawler.Crawl(args);
                         
                         break;
                     case "normalize":

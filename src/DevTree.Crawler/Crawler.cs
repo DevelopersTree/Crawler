@@ -15,45 +15,35 @@ namespace DevTree.Crawler
     {
         private const char IgnoreCharacter = '\0';
 
-        private string _savePath = null;
-        private int _delay;
-        private int _maxPages;
-        private HashSet<WebPage> _webPages;
-        private IList<string> _TextContents;
-        private string _statsFilePath;
+        private static string _savePath;
+        private static string _statsFilePath;
+        private static HashSet<WebPage> _webPages;
         private const string StatsFileName = "$Stats.txt";
-        private Uri _seedUrl;
-        private static string _savedFilesDirectory;
-        private static string _outputDirectory;
-        public Crawler(string[] args)
-        {
-            
-            _savePath = ParameterHelper.GetParameter(args, "-output", $" output path");
-            _delay = ParameterHelper.GetIntegerParameter(args, "-delay", 1000);
-            _maxPages = ParameterHelper.GetIntegerParameter(args, "-pages", 250);
-            _statsFilePath = ParameterHelper.GetPath(_savePath, StatsFileName);
-            _seedUrl = new Uri(ParameterHelper.GetParameter(args, "-url", " seed page"));
-            
-        }
 
-        public HashSet<WebPage> Crawl()
+        public static HashSet<WebPage> Crawl(string[] args)
         {
-            _TextContents = new List<string>();
-            
+            _savePath = ParameterHelper.GetParameter(args, "-output", $" output path");
+            _statsFilePath = ParameterHelper.GetPath(_savePath, StatsFileName);
+
+            var delay = ParameterHelper.GetIntegerParameter(args, "-delay", 1000);
+            var maxPages = ParameterHelper.GetIntegerParameter(args, "-pages", 250);
+           
+            var seedUrl = new Uri(ParameterHelper.GetParameter(args, "-url", " seed page"));
+
             if (File.Exists(_statsFilePath))
                 File.Delete(_statsFilePath);
 
             var equalityComparer = ProjectionEqualityComparer.Create<WebPage, string>(page => page.Url);
             _webPages = new HashSet<WebPage>(equalityComparer);
 
-            var crawler = GetDefaultWebCrawler(_maxPages, _delay);
+            var crawler = GetDefaultWebCrawler(maxPages, delay);
             crawler.PageCrawlCompletedAsync += crawler_ProcessPageCrawlCompleted;
 
-            CrawlResult result = crawler.Crawl(_seedUrl);
+            CrawlResult result = crawler.Crawl(seedUrl);
             return _webPages;
         }
 
-        private IWebCrawler GetDefaultWebCrawler(int maxPagesToCrawl, int delayInMilliseconds)
+        private static IWebCrawler GetDefaultWebCrawler(int maxPagesToCrawl, int delayInMilliseconds)
         {
             var config = new CrawlConfiguration();
             config.CrawlTimeoutSeconds = 0;
@@ -71,7 +61,7 @@ namespace DevTree.Crawler
             return new PoliteWebCrawler(config);
         }
         
-        void crawler_ProcessPageCrawlCompleted(object sender, PageCrawlCompletedArgs e)
+        private static void crawler_ProcessPageCrawlCompleted(object sender, PageCrawlCompletedArgs e)
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -91,7 +81,6 @@ namespace DevTree.Crawler
             }
 
             var contents = Extractor.Extract(e.CrawledPage.Content.Text);
-            _TextContents.Add(contents);
 
             page.NumberOfWords = contents.Split(' ').Length;
 
@@ -103,11 +92,8 @@ namespace DevTree.Crawler
             Console.WriteLine("Pages crowled: " + _webPages.Count);
             Console.WriteLine($"Page Crawled: {page.Url}, Number Of Words: {page.NumberOfWords:n0}. Processed in {stopWatch.ElapsedMilliseconds:n0} ms");
         }
-        
 
-
-
-        public void SaveStats(WebPage page)
+        public static void SaveStats(WebPage page)
         {
             var content = $"{page.Url},{page.FileName},{page.NumberOfWords}{Environment.NewLine}";
 

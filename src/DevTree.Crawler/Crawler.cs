@@ -70,7 +70,38 @@ namespace DevTree.Crawler
 
             return new PoliteWebCrawler(config);
         }
+        private static void drawTextProgressBar(int progress, int total)
+        {
+            //draw empty progress bar
+            Console.CursorLeft = 0;
+            Console.Write("["); //start
+            Console.CursorLeft = 32;
+            Console.Write("]"); //end
+            Console.CursorLeft = 1;
+            float onechunk = 30.0f / total;
 
+            //draw filled part
+            int position = 1;
+            for (int i = 0; i < onechunk * progress; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Gray;
+                Console.CursorLeft = position++;
+                Console.Write(" ");
+            }
+
+            //draw unfilled part
+            for (int i = position; i <= 31; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Green;
+                Console.CursorLeft = position++;
+                Console.Write(" ");
+            }
+
+            //draw totals
+            Console.CursorLeft = 35;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(progress.ToString() + " of " + total.ToString() + "    "); //blanks at the end remove any excess
+        }
         void crawler_ProcessPageCrawlCompleted(object sender, PageCrawlCompletedArgs e)
         {
             var stopWatch = new Stopwatch();
@@ -107,10 +138,12 @@ namespace DevTree.Crawler
         {
             _savedFilesDirectory = ParameterHelper.GetParameter(args, "-inputdir", " Input Directory ");
             _outputDirectory = ParameterHelper.GetParameter(args, "-outdir", " Output Directory ");
-
+            
             DirectoryInfo dinfo = new DirectoryInfo(_savedFilesDirectory);
             FileInfo[] TextFiles = dinfo.GetFiles("*.txt");
+            drawTextProgressBar(0, TextFiles.Length);
             string tmpStr = null;
+            int i = 0;
             foreach (FileInfo file in TextFiles)
             {
                 tmpStr = (File.ReadAllText(file.FullName)).ToStandardSorani();
@@ -118,13 +151,14 @@ namespace DevTree.Crawler
                 if (tmpStr.Length != 0)
                 {
                     IOHelper.SaveFile(_outputDirectory + file.Name, tmpStr);
-                    Console.WriteLine("File Processed :"+ file.Name);
+                    //Console.WriteLine("File Processed :"+ file.Name);
                 }
                 else
                 {
-                    Console.WriteLine("File Discarded :" + file.Name);
+                    //Console.WriteLine("File Discarded :" + file.Name);
                 }
-                
+                drawTextProgressBar(i, TextFiles.Length);
+                i++;
                 tmpStr = null;
             }
             Console.WriteLine("All Files Normalized.........");

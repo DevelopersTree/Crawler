@@ -29,7 +29,8 @@ It has these commands:
 
 ### Normalize
 ```
-./crawler.exe normalize -inputdir <inputdirectory> -outdir <outputdirectory> ```
+./crawler.exe normalize -inputdir <inputdirectory> -outdir <outputdirectory> 
+```
 
 #### Parameters:
 - `inputdirectory`: Path for the  folder which contains collected text from the website.

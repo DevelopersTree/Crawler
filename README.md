@@ -3,7 +3,7 @@ A small web crawler used to collect Kurdish text over the web
 
 It has these commands:
  - [X] **Crawl:** used to crawl web pages and extact kurdish text from them and save them to a folder on disk.
- - [ ] **Normalize:** used to convert the text collected in the previous command to standard unicode text.
+ - [X] **Normalize:** used to convert the text collected in the previous command to standard unicode text.
  - [ ] **Merge:** Used to merge the text files produced from the previous commands.
  - [ ] **WordList:** used to make a wordlist from the text file that's produced from the previous command.
 
@@ -40,5 +40,4 @@ It has these commands:
 #### Examples:
 ```
 ./crawler.exe normalize -inputdir ./myInputFolder -outdir ./myOutputFolder
-
 ```

@@ -13,12 +13,18 @@ namespace DevTree.Crawler
         {
             if (args.Length >= 1)
             {
+                Crawler pageCrawler = null;
                 switch (args[0].ToLower())
                 {
                     case "crawl":
-                        var pageCrawler = new Crawler(args);
+                        pageCrawler  = new Crawler(args);
                         var webPages = pageCrawler.Crawl();
+                        
                         break;
+                    case "normalize":
+                        Crawler.ConvertToStandardText(args);
+
+                       break;
 
                     default:
                         WriteHelp();
@@ -35,11 +41,11 @@ namespace DevTree.Crawler
         private static void WriteHelp()
         {
             Console.WriteLine(@"
-Developers Tree Crawler
-A little app used to manage the words list
+                    Developers Tree Crawler
+                    A little app used to manage the words list
 
-For information about how to use this app, please go to: https://github.com/DevelopersTree/Crawler
-");
+                    For information about how to use this app, please go to: https://github.com/DevelopersTree/Crawler
+            ");
         }
     }
 }

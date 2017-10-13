@@ -25,3 +25,19 @@ It has these commands:
 ./crawler.exe crawl -url https://ckb.wikipedia.org -output ./Data
 ./crawler.exe crawl -url https://www.google.iq/ -output D:/CrawledPages/ -delay 250 -pages 1000
 ```
+
+
+### Normalize
+```
+./crawler.exe normalize -inputdir <inputdirectory> -outdir <outputdirectory> ```
+
+#### Parameters:
+- `inputdirectory`: Path for the  folder which contains collected text from the website.
+- `outputdirectory`: Output Directory files are saved in this folder after normalizing, files which have size of 0 will be discarded.
+
+
+#### Examples:
+```
+./crawler.exe normalize -inputdir ./myInputFolder -outdir ./myOutputFolder
+
+```

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DevTree.BeKurdi;
 
 namespace DevTree.Crawler
 {
@@ -18,20 +19,27 @@ namespace DevTree.Crawler
         private int _delay;
         private int _maxPages;
         private HashSet<WebPage> _webPages;
+        private IList<string> _TextContents;
         private string _statsFilePath;
         private const string StatsFileName = "$Stats.txt";
         private Uri _seedUrl;
+        private static string _savedFilesDirectory;
+        private static string _outputDirectory;
         public Crawler(string[] args)
         {
+            
             _savePath = ParameterHelper.GetParameter(args, "-output", $" output path");
             _delay = ParameterHelper.GetIntegerParameter(args, "-delay", 1000);
             _maxPages = ParameterHelper.GetIntegerParameter(args, "-pages", 250);
             _statsFilePath = ParameterHelper.GetPath(_savePath, StatsFileName);
             _seedUrl = new Uri(ParameterHelper.GetParameter(args, "-url", " seed page"));
+            
         }
 
         public HashSet<WebPage> Crawl()
         {
+            _TextContents = new List<string>();
+            
             if (File.Exists(_statsFilePath))
                 File.Delete(_statsFilePath);
 
@@ -42,7 +50,6 @@ namespace DevTree.Crawler
             crawler.PageCrawlCompletedAsync += crawler_ProcessPageCrawlCompleted;
 
             CrawlResult result = crawler.Crawl(_seedUrl);
-
             return _webPages;
         }
 
@@ -76,7 +83,7 @@ namespace DevTree.Crawler
             };
 
             var success = _webPages.Add(page);
-
+            
             if (!success)
             {
                 Console.WriteLine("This page ha already been crawled...");
@@ -84,6 +91,8 @@ namespace DevTree.Crawler
             }
 
             var contents = Extractor.Extract(e.CrawledPage.Content.Text);
+            _TextContents.Add(contents);
+
             page.NumberOfWords = contents.Split(' ').Length;
 
             IOHelper.SaveFile(page.FileName, contents);
@@ -94,6 +103,34 @@ namespace DevTree.Crawler
             Console.WriteLine("Pages crowled: " + _webPages.Count);
             Console.WriteLine($"Page Crawled: {page.Url}, Number Of Words: {page.NumberOfWords:n0}. Processed in {stopWatch.ElapsedMilliseconds:n0} ms");
         }
+        public static  void ConvertToStandardText(string[] args)
+        {
+            _savedFilesDirectory = ParameterHelper.GetParameter(args, "-inputdir", " Input Directory ");
+            _outputDirectory = ParameterHelper.GetParameter(args, "-outdir", " Output Directory ");
+
+            DirectoryInfo dinfo = new DirectoryInfo(_savedFilesDirectory);
+            FileInfo[] TextFiles = dinfo.GetFiles("*.txt");
+            string tmpStr = null;
+            foreach (FileInfo file in TextFiles)
+            {
+                tmpStr = (File.ReadAllText(file.FullName)).ToStandardSorani();
+                
+                if (tmpStr.Length != 0)
+                {
+                    IOHelper.SaveFile(_outputDirectory + file.Name, tmpStr);
+                    Console.WriteLine("File Processed :"+ file.Name);
+                }
+                else
+                {
+                    Console.WriteLine("File Discarded :" + file.Name);
+                }
+                
+                tmpStr = null;
+            }
+            Console.WriteLine("All Files Normalized.........");
+        } 
+
+
 
         public void SaveStats(WebPage page)
         {

@@ -13,13 +13,13 @@ namespace DevTree.Crawler
         private const char IgnoredChar = '\u0000';
         public static string Extract(string fullText)
         {
-            var fullCharacterSet = Kurdish.SoraniAlphabet.Union(Kurdish.NonStandardSoraniAlphabet)
-                                                         .Union(Kurdish.SoraniNumbers)
+            var fullCharacterSet = Unicode.SoraniAlphabet.Union(Unicode.NonStandardSoraniAlphabet)
+                                                         .Union(Unicode.SoraniNumbers)
                                                          .Union(new char[]
                                                          {
-                                                             Kurdish.FullStop,
-                                                             Kurdish.SoraniQuestionMark,
-                                                             Kurdish.Space
+                                                             Unicode.FullStop,
+                                                             Unicode.SoraniQuestionMark,
+                                                             Unicode.Space
                                                          }).ToList();
 
             var parser = new HtmlParser();
@@ -36,12 +36,12 @@ namespace DevTree.Crawler
             bool skipNextChar = false;
             for (int i = 0; i < text.Length; i++)
             {
-                var currentChar = acceptableChars.Contains(text[i]) ? text[i] : Kurdish.Space;
+                var currentChar = acceptableChars.Contains(text[i]) ? text[i] : Unicode.Space;
 
                 switch (currentChar)
                 {
-                    case Kurdish.FullStop:
-                    case Kurdish.Space:
+                    case Unicode.FullStop:
+                    case Unicode.Space:
                         if (!skipNextChar)
                         {
                             builder.Append(currentChar);

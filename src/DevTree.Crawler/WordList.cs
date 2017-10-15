@@ -10,7 +10,7 @@ namespace DevTree.Crawler
 {
     class WordList
     {
-        private static char[] _delimiters = {' ','،',',',';','.','؛',':','.','/','\\' };
+        private static char[] _delimiters = {' ','،',',',';','.','؛',':','.','/','\\','\n'};
         private static Dictionary<string,int> _duplicates;
 
         public static void wordlist(string[] args)
@@ -21,7 +21,6 @@ namespace DevTree.Crawler
 
             DirectoryInfo dinfo = new DirectoryInfo(inputdir);
             FileInfo[] TextFiles = dinfo.GetFiles("*.txt");
-            //ConsoleUtil.DrawTextProgressBar(0, TextFiles.Length);
             string[] tmpStrArray = null;
             string wordlist = "";
             
@@ -31,13 +30,13 @@ namespace DevTree.Crawler
             Word tmpWord = new Word();
             foreach (FileInfo file in TextFiles)
             {
-                tmpStrArray = File.ReadAllText(file.FullName).Split();
+                tmpStrArray = File.ReadAllText(file.FullName).Split(_delimiters);
                 foreach(string element in tmpStrArray)
                 {
-                    string[] test = { "1","2"};
+                    
                     if (!wordlist.Contains(element) && element.IndexOfAny(characters)==-1)
                     {
-                        wordlist = wordlist + "\n" + element;
+                        wordlist = wordlist + Environment.NewLine + element;
                     }
                     else
                     {
@@ -58,10 +57,10 @@ namespace DevTree.Crawler
             string statstics = "";
             foreach (KeyValuePair<string, int> pair in _duplicates)
             {
-                statstics = statstics + "\n" + pair.Key + " { " + pair.Value + " } ";
+                statstics = statstics  + pair.Key + "," + pair.Value + Environment.NewLine;
             }
-            IOHelper.SaveFile(inputdir + "/STATSTICS.txt", statstics);
-            Console.WriteLine("\n---------wordlist created---------");
+            IOHelper.SaveFile(inputdir + "/STATSTICS.csv", statstics);
+            Console.WriteLine(Environment.NewLine + "---------wordlist created---------");
             Console.WriteLine("---------Saving Results---------");
             IOHelper.SaveFile(inputdir+"/"+filename, wordlist);
             Console.WriteLine("---------Done---------");

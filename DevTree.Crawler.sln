@@ -7,13 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevTree.Crawler", "src\DevT
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		BlahBlah|Any CPU = BlahBlah|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{85D23AB5-0B0D-4572-A192-70A058B5B916}.BlahBlah|Any CPU.ActiveCfg = BlahBlah|Any CPU
-		{85D23AB5-0B0D-4572-A192-70A058B5B916}.BlahBlah|Any CPU.Build.0 = BlahBlah|Any CPU
 		{85D23AB5-0B0D-4572-A192-70A058B5B916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{85D23AB5-0B0D-4572-A192-70A058B5B916}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85D23AB5-0B0D-4572-A192-70A058B5B916}.Release|Any CPU.ActiveCfg = Release|Any CPU

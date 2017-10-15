@@ -59,7 +59,7 @@ namespace DevTree.Crawler
             {
                 statstics = statstics  + pair.Key + "," + pair.Value + Environment.NewLine;
             }
-            IOHelper.SaveFile(inputdir + "/STATSTICS.csv", statstics);
+            IOHelper.SaveFile(inputdir + "/STATSTICS.txt", statstics);
             Console.WriteLine(Environment.NewLine + "---------wordlist created---------");
             Console.WriteLine("---------Saving Results---------");
             IOHelper.SaveFile(inputdir+"/"+filename, wordlist);

@@ -32,6 +32,7 @@ namespace DevTree.Crawler
                 {
                     //Console.WriteLine("File Discarded :" + file.Name);
                 }
+                
                 ConsoleUtil.DrawTextProgressBar(i, TextFiles.Length);
                 i++;
                 tmpStr = null;

@@ -5,7 +5,7 @@ It has these commands:
  - [X] **Crawl:** used to crawl web pages and extact kurdish text from them and save them to a folder on disk.
  - [X] **Normalize:** used to convert the text collected in the previous command to standard unicode text.
  - [ ] **Merge:** Used to merge the text files produced from the previous commands.
- - [ ] **WordList:** used to make a wordlist from the text file that's produced from the previous command.
+ - [X] **WordList:** used to make a wordlist from the text file that's produced from the previous command.
 
 ## How to use
 
@@ -40,4 +40,20 @@ It has these commands:
 #### Examples:
 ```
 ./crawler.exe normalize -inputdir ./myInputFolder -outdir ./myOutputFolder
+```
+
+
+### Wordlist
+```
+./crawler.exe wordlist -inputdir <inputdirectory> -outfile <outputfile> 
+```
+
+#### Parameters:
+- `inputdirectory`: Path for the  folder which contains collected text after normalizing the collected data.
+- `outputfile`: Output File which contains created wordlist form previous step.
+
+
+#### Examples:
+```
+./crawler.exe wordlist -inputdir ./NormalizedFolderData -outfile WORDLIST.txt
 ```

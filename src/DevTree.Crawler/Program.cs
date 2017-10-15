@@ -23,6 +23,10 @@ namespace DevTree.Crawler
                         Normalizer.ConvertToStandardText(args);
 
                        break;
+                    case "wordlist":
+                        WordList.wordlist(args);
+
+                        break;
 
                     default:
                         WriteHelp();

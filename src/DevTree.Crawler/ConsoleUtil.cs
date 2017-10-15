@@ -8,39 +8,35 @@ namespace DevTree.Crawler
 {
     class ConsoleUtil
     {
-        public static void DrawTextProgressBar(int progress, int total)
+        public static void DrawTextProgressBar(double progress, double total)
         {
-            var defaultColor = Console.BackgroundColor;
+            var defaultColor = Console.ForegroundColor;
 
-            //draw empty progress bar
-            Console.CursorLeft = 0;
-            Console.Write("["); //start
-            Console.CursorLeft = 32;
-            Console.Write("]"); //end
-            Console.CursorLeft = 1;
-            float onechunk = 30.0f / total;
+            Console.Write("\r");
 
-            //draw filled part
-            int position = 1;
-            for (int i = 0; i < onechunk * progress; i++)
+            const double availableUnits = 50;
+            var percent = progress / total;
+            var filledUnits = percent * availableUnits;
+
+            Console.Write("[");
+            for (int i = 0; i < availableUnits; i++)
             {
-                Console.BackgroundColor = ConsoleColor.Gray;
-                Console.CursorLeft = position++;
-                Console.Write(" ");
+                if (i <= filledUnits)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\u2588");
+                }
+                else
+                {
+                    Console.ForegroundColor = defaultColor;
+                    Console.Write("-");
+                }
             }
 
-            //draw unfilled part
-            for (int i = position; i <= 31; i++)
-            {
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.CursorLeft = position++;
-                Console.Write(" ");
-            }
+            Console.ForegroundColor = defaultColor;
+            Console.Write("]");
 
-            //draw totals
-            Console.CursorLeft = 35;
-            Console.BackgroundColor = defaultColor;
-            Console.Write(progress.ToString() + " of " + total.ToString() + "    "); //blanks at the end remove any excess
+            Console.Write($" - {progress}/{total} ({percent * 100:00.0}%)");
         }
     }
    

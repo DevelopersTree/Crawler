@@ -20,7 +20,7 @@ namespace DevTree.Crawler
             _duplicates = new Dictionary<string, int>();
 
             DirectoryInfo dinfo = new DirectoryInfo(inputdir);
-            FileInfo[] TextFiles = dinfo.GetFiles("*.txt");
+            FileInfo[] TextFiles = dinfo.GetFiles("*.txt", SearchOption.AllDirectories);
             string[] tmpStrArray = null;
             string wordlist = "";
             
@@ -59,10 +59,10 @@ namespace DevTree.Crawler
             {
                 statstics = statstics  + pair.Key + "," + pair.Value + Environment.NewLine;
             }
-            IOHelper.SaveFile(inputdir + "/STATSTICS.txt", statstics);
+            IOHelper.SaveFile(Path.Combine(inputdir, "/STATSTICS.txt"), statstics);
             Console.WriteLine(Environment.NewLine + "---------wordlist created---------");
             Console.WriteLine("---------Saving Results---------");
-            IOHelper.SaveFile(inputdir+"/"+filename, wordlist);
+            IOHelper.SaveFile(Path.Combine(inputdir,filename), wordlist);
             Console.WriteLine("---------Done---------");
         }
     }

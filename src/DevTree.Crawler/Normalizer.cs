@@ -25,7 +25,7 @@ namespace DevTree.Crawler
 
                 if (tmpStr.Length != 0)
                 {
-                    IOHelper.SaveFile(_outputDirectory + file.Name, tmpStr);
+                    IOHelper.SaveFile(Path.Combine(_outputDirectory, file.Name), tmpStr);
                     //Console.WriteLine("File Processed :"+ file.Name);
                 }
                 else

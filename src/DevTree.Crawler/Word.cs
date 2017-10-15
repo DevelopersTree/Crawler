@@ -8,7 +8,7 @@ namespace DevTree.Crawler
 {
     public class Word
     {
-        public string Value { get; set; }
+        public string word { get; set; }
         public int Frequency { get; set; }
     }
 }

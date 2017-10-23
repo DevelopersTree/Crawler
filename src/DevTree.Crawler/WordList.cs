@@ -10,7 +10,7 @@ namespace DevTree.Crawler
 {
     class WordList
     {
-        private static char[] _delimiters = { ' ', '،', ',', ';', '.', '؛', ':', '.', '/', '\\', '\n' };
+        private static char[] _delimiters = { ' ', '،', ',', ';', '.', '؛', ':', '.', '/', '\\', '\n','_',':','-' };
         private static Dictionary<string, int> _wordList;
 
         public static void wordlist(string[] args)
